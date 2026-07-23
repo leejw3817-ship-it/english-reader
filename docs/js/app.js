@@ -11,6 +11,7 @@
     loading: true,
     error: null,
     currentCategory: 'All',
+    currentUseCase: '',
     currentQuery: '',
     readArticles: new Set(),
     fontSize: 18,
@@ -193,9 +194,17 @@
   function filterArticles(category, query) {
     let filtered = [...STATE.articles];
 
+    // Category filter
     if (category && category !== 'All') {
       filtered = filtered.filter(
         (a) => a.category && a.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    // Use-case filter
+    if (STATE.currentUseCase) {
+      filtered = filtered.filter(
+        (a) => a.useCases && Array.isArray(a.useCases) && a.useCases.includes(STATE.currentUseCase)
       );
     }
 
@@ -257,7 +266,7 @@
         <h3 class="card-title">${escapeHtml(article.title)}</h3>
         <p class="card-desc">${escapeHtml(article.description || '')}</p>
         <div class="card-footer">
-          <span class="card-tag ${escapeAttr(article.difficulty || 'intermediate')}">${capitalize(article.difficulty || 'intermediate')}</span>
+          ${(article.useCases || []).slice(0, 2).map(uc => `<span class="card-tag usecase-tag usecase-${escapeAttr(uc.toLowerCase())}">${usecaseEmoji(uc)} ${usecaseLabel(uc)}</span>`).join('')}
           <span>${dateStr}</span>
           <span class="card-dot">·</span>
           <span>${readTime} 分钟</span>
@@ -361,9 +370,33 @@
 
   // ==================== Filter Pills ====================
   function updateFilterPills(activeCategory) {
-    $$('.filter-pill').forEach((pill) => {
+    $$('.filter-bar:not(.usecase-bar) .filter-pill').forEach((pill) => {
       pill.classList.toggle('active', pill.dataset.category === activeCategory);
     });
+  }
+
+  function updateUseCasePills(activeUseCase) {
+    $$('.usecase-pill').forEach((pill) => {
+      pill.classList.toggle('active', pill.dataset.usecase === activeUseCase);
+    });
+  }
+
+  function usecaseLabel(uc) {
+    const map = {
+      'CET-4': '四级', 'CET-6': '六级', 'Post-grad': '考研',
+      'Daily': '日常', 'Business': '商务', 'Academic': '学术',
+      'IELTS': '雅思托福', 'Hot': '热点'
+    };
+    return map[uc] || uc;
+  }
+
+  function usecaseEmoji(uc) {
+    const map = {
+      'CET-4': '🎓', 'CET-6': '📖', 'Post-grad': '📝',
+      'Daily': '💬', 'Business': '💼', 'Academic': '🔬',
+      'IELTS': '🌍', 'Hot': '🔥'
+    };
+    return map[uc] || '';
   }
 
   // ==================== Global Event Listeners ====================
@@ -398,19 +431,36 @@
       Router.navigate('');
     });
 
-    // Filter pills
-    $$('.filter-pill').forEach((pill) => {
+    // Filter pills (category)
+    $$('.filter-bar:not(.usecase-bar) .filter-pill').forEach((pill) => {
       pill.addEventListener('click', () => {
         const cat = pill.dataset.category;
         STATE.currentCategory = cat;
+        STATE.currentUseCase = '';
         STATE.currentQuery = '';
         STATE.currentPage = 1;
         $('#heroSearchInput').value = '';
+        updateFilterPills(cat);
+        updateUseCasePills('');
         if (cat === 'All') {
           Router.navigate('');
         } else {
           Router.navigate(`/category/${encodeURIComponent(cat)}`);
         }
+      });
+    });
+
+    // Use-case filter pills
+    $$('.usecase-pill').forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const uc = pill.dataset.usecase;
+        const isActive = pill.classList.contains('active');
+        STATE.currentUseCase = isActive ? '' : uc;
+        STATE.currentPage = 1;
+        updateUseCasePills(STATE.currentUseCase);
+        const filtered = filterArticles(STATE.currentCategory, '');
+        renderArticleGrid(filtered);
+        updateStats(filtered.length);
       });
     });
 

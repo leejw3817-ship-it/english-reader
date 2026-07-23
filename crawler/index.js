@@ -2,10 +2,12 @@
 // Fetches all RSS sources, scrapes full content, deduplicates, and stores articles
 
 const SOURCES = require('./sources');
-const { fetchSource } = require('./fetcher');
+const { fetchSource, assignUseCases } = require('./fetcher');
 const { mergeArticles } = require('./dedup');
 const { readArticles, writeArticles } = require('./storage');
 const { fetchFullContent, needsScraping } = require('./scraper');
+const fs = require('fs');
+const path = require('path');
 
 const MAX_ARTICLES = 500;
 const CONCURRENCY_DELAY = 1500; // 1.5s between RSS source requests
@@ -40,6 +42,9 @@ async function main() {
         article.content = fullContent;
         article.wordCount = countWords(fullContent);
         article.difficulty = estimateDifficulty(article.wordCount);
+        // Re-assign use cases with updated difficulty/wordCount
+        const { assignUseCases } = require('./fetcher');
+        article.useCases = assignUseCases(article.category, article.difficulty, article.wordCount);
         scrapedCount++;
         process.stdout.write(`\r  ✅ Scraped: ${scrapedCount} / ${allIncoming.length}`);
       }
@@ -60,8 +65,15 @@ async function main() {
   const fullArticles = merged.filter((a) => stripLen(a.content) > 800);
   console.log(`📊 Full-length articles (800+ chars): ${fullArticles.length}`);
 
-  // Write back
+  // Write to docs/data/ (primary)
   writeArticles(merged);
+
+  // Also write to root data/ for GitHub Pages root deployment
+  const rootDataDir = path.join(__dirname, '..', 'data');
+  if (!fs.existsSync(rootDataDir)) fs.mkdirSync(rootDataDir, { recursive: true });
+  const data = { articles: merged, lastUpdated: new Date().toISOString(), totalArticles: merged.length };
+  fs.writeFileSync(path.join(rootDataDir, 'articles.json'), JSON.stringify(data, null, 2));
+  console.log(`  💾 Also saved to data/articles.json`);
 
   // Category breakdown
   const categories = {};

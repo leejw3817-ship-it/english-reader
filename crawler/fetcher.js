@@ -73,6 +73,7 @@ function normalizeArticle(item, source) {
     source: source.name,
     sourceSlug: source.slug,
     category: source.category,
+    useCases: assignUseCases(source.category, difficulty, wordCount),
     description: cleanText(item.contentSnippet || stripHtml(item.summary || item.content || '')).slice(0, 300),
     content: item.content || item['content:encoded'] || item.summary || '',
     author: item.creator || item.author || source.name,
@@ -82,6 +83,62 @@ function normalizeArticle(item, source) {
     difficulty,
     wordCount,
   };
+}
+
+/**
+ * Assign use-case tags to an article based on category and difficulty
+ * Tags: 四级(CET-4), 六级(CET-6), 考研(Post-grad), 日常英语(Daily),
+ *        商务英语(Business), 学术英语(Academic), 雅思托福(IELTS/TOEFL), 时事热点(Hot)
+ */
+function assignUseCases(category, difficulty, wordCount) {
+  const cases = [];
+
+  // 四级 CET-4: beginner level, shorter content
+  if (difficulty === 'beginner' || wordCount < 300) {
+    cases.push('CET-4');
+  }
+
+  // 六级 CET-6: intermediate level
+  if (difficulty === 'intermediate' || (wordCount >= 300 && wordCount < 600)) {
+    cases.push('CET-6');
+  }
+
+  // 考研 Post-grad: advanced academic content
+  if (difficulty === 'advanced' && (category === 'Science' || category === 'Technology')) {
+    cases.push('Post-grad');
+  }
+
+  // 日常英语 Daily English: general/world/culture, beginner/intermediate
+  if ((category === 'General' || category === 'World' || category === 'Culture') && difficulty !== 'advanced') {
+    cases.push('Daily');
+  }
+
+  // 商务英语 Business English
+  if (category === 'Business') {
+    cases.push('Business');
+  }
+
+  // 学术英语 Academic English
+  if (category === 'Science' || category === 'Technology') {
+    cases.push('Academic');
+  }
+
+  // 雅思托福 IELTS/TOEFL: advanced, longer articles with academic bent
+  if (difficulty === 'advanced' && wordCount >= 500) {
+    cases.push('IELTS');
+  }
+
+  // 时事热点 Current Affairs / Hot Topics
+  if (category === 'World' || category === 'General') {
+    cases.push('Hot');
+  }
+
+  // 确保每个文章至少有一个标签
+  if (cases.length === 0) {
+    cases.push('Daily');
+  }
+
+  return cases;
 }
 
 /**
@@ -122,4 +179,4 @@ function cleanText(text) {
     .trim();
 }
 
-module.exports = { fetchSource, normalizeArticle };
+module.exports = { fetchSource, normalizeArticle, assignUseCases };

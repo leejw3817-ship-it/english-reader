@@ -536,6 +536,34 @@ input {
 [data-theme="dark"] .card-tag.intermediate { background: #3a3520; }
 [data-theme="dark"] .card-tag.advanced    { background: #3a2020; }
 
+/* Use-case tag colors */
+.usecase-tag { padding: 2px 10px; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 500; }
+.usecase-cet-4  { background: #e8f5e9; color: #2e7d32; }
+.usecase-cet-6  { background: #e3f2fd; color: #1565c0; }
+.usecase-post-grad { background: #f3e5f5; color: #7b1fa2; }
+.usecase-ielts  { background: #e0f7fa; color: #00838f; }
+.usecase-daily  { background: #fff3e0; color: #e65100; }
+.usecase-business { background: #fce4ec; color: #c62828; }
+.usecase-academic { background: #e8eaf6; color: #283593; }
+.usecase-hot    { background: #fff8e1; color: #f57f17; }
+[data-theme="dark"] .usecase-cet-4  { background: #1b5e20; color: #a5d6a7; }
+[data-theme="dark"] .usecase-cet-6  { background: #0d47a1; color: #90caf9; }
+[data-theme="dark"] .usecase-post-grad { background: #4a148c; color: #ce93d8; }
+[data-theme="dark"] .usecase-ielts  { background: #004d40; color: #80cbc4; }
+[data-theme="dark"] .usecase-daily  { background: #bf360c; color: #ffab91; }
+[data-theme="dark"] .usecase-business { background: #b71c1c; color: #ef9a9a; }
+[data-theme="dark"] .usecase-academic { background: #1a237e; color: #9fa8da; }
+[data-theme="dark"] .usecase-hot    { background: #e65100; color: #ffe082; }
+
+/* Use-case filter bar */
+.usecase-bar {
+  padding-top: 0;
+}
+
+.usecase-bar .filter-pill {
+  font-size: 0.82rem;
+}
+
 .card-dot {
   color: var(--color-border);
 }
