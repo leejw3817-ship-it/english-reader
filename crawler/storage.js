@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_DIR = path.join(__dirname, '..', 'public', 'data');
+const DATA_DIR = path.join(__dirname, '..', 'docs', 'data');
 const DATA_FILE = path.join(DATA_DIR, 'articles.json');
 
 /**
