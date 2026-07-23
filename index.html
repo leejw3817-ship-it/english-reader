@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="English Reader — Free foreign publications for English learning. Read curated articles from BBC, NPR, The Guardian, Aeon, MIT Tech Review and more.">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="English Reader">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <title>English Reader — 外刊读物</title>
+
+  <!-- Google Fonts: Roboto + Noto Sans SC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="#/" class="logo" title="English Reader Home">
+        <svg class="logo-icon" viewBox="0 0 32 32" width="28" height="28" fill="none">
+          <rect width="32" height="32" rx="8" fill="#1a73e8"/>
+          <text x="16" y="22" text-anchor="middle" fill="white" font-size="17" font-weight="700" font-family="Georgia, serif">E</text>
+        </svg>
+        <span class="logo-text">English Reader</span>
+      </a>
+
+      <div class="header-search" id="headerSearch">
+        <svg class="search-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="#9aa0a6">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input type="text" class="header-search-input" id="headerSearchInput"
+               placeholder="Search articles…" autocomplete="off">
+        <button class="search-clear hidden" id="searchClear" aria-label="Clear search">&times;</button>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#/" class="nav-link active" data-route="/">Home</a>
+        <a href="#/category/Technology" class="nav-link" data-cat="Technology">Tech</a>
+        <a href="#/category/Science" class="nav-link" data-cat="Science">Science</a>
+        <a href="#/category/World" class="nav-link" data-cat="World">World</a>
+        <a href="#/category/Business" class="nav-link" data-cat="Business">Business</a>
+        <a href="#/category/Culture" class="nav-link" data-cat="Culture">Culture</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main" id="main">
+    <!-- Homepage View -->
+    <section class="view view-home" id="viewHome">
+      <!-- Hero Search -->
+      <div class="hero">
+        <div class="hero-logo">
+          <svg viewBox="0 0 48 48" width="56" height="56" fill="none">
+            <rect width="48" height="48" rx="12" fill="#1a73e8"/>
+            <text x="24" y="33" text-anchor="middle" fill="white" font-size="26" font-weight="700" font-family="Georgia, serif">E</text>
+          </svg>
+        </div>
+        <h1 class="hero-title">English Reader</h1>
+        <p class="hero-subtitle">Read the world. Learn English.</p>
+
+        <div class="hero-search">
+          <svg class="search-icon-lg" viewBox="0 0 24 24" width="22" height="22" fill="#9aa0a6">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input type="text" class="hero-search-input" id="heroSearchInput"
+                 placeholder="Search for articles…" autocomplete="off" autofocus>
+          <kbd class="search-kbd" id="searchKbd">Ctrl+K</kbd>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="filter-bar">
+        <button class="filter-pill active" data-category="All">All</button>
+        <button class="filter-pill" data-category="Technology">Technology</button>
+        <button class="filter-pill" data-category="Science">Science</button>
+        <button class="filter-pill" data-category="World">World</button>
+        <button class="filter-pill" data-category="Business">Business</button>
+        <button class="filter-pill" data-category="Culture">Culture</button>
+        <button class="filter-pill" data-category="General">General</button>
+      </div>
+
+      <!-- Article Stats -->
+      <div class="stats-bar">
+        <span class="stat-item">
+          <span class="stat-value" id="articleCount">0</span> articles
+        </span>
+        <span class="stat-divider">·</span>
+        <span class="stat-item">
+          Updated <span class="stat-value" id="lastUpdated">--</span>
+        </span>
+        <span class="stat-divider">·</span>
+        <span class="stat-item" id="activeFilterLabel">All categories</span>
+      </div>
+
+      <!-- Article Grid -->
+      <div class="article-grid" id="articleGrid">
+        <!-- Cards rendered by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state hidden" id="emptyState">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="#dadce0">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+        <h3>No articles found</h3>
+        <p>Try a different search term or category filter.</p>
+      </div>
+
+      <!-- Load More -->
+      <div class="load-more hidden" id="loadMore">
+        <button class="btn-load-more" id="btnLoadMore">Load more articles</button>
+      </div>
+    </section>
+
+    <!-- Article Detail View -->
+    <section class="view view-article hidden" id="viewArticle">
+      <div class="article-container">
+        <button class="btn-back" onclick="window.history.back()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#5f6368">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+          Back
+        </button>
+
+        <article class="article-detail" id="articleDetail">
+          <!-- Filled by JS -->
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Floating toolbar (reading mode) ===== -->
+  <div class="float-toolbar hidden" id="floatToolbar">
+    <button class="float-btn" id="fontSizeUp" title="Increase font size" aria-label="Increase font">A+</button>
+    <button class="float-btn" id="fontSizeReset" title="Reset font size" aria-label="Reset font">A</button>
+    <button class="float-btn" id="fontSizeDown" title="Decrease font size" aria-label="Decrease font">A-</button>
+    <div class="float-divider"></div>
+    <button class="float-btn" id="scrollTop" title="Back to top" aria-label="Back to top">↑</button>
+  </div>
+
+  <!-- ===== Loading Spinner ===== -->
+  <div class="loading hidden" id="loadingSpinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>English Reader — 外刊读物</span>
+      <span class="footer-divider">·</span>
+      <span>Open source on <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></span>
+      <span class="footer-divider">·</span>
+      <span>Articles from public RSS feeds for educational purposes</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

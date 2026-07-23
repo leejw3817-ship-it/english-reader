@@ -1,0 +1,43 @@
+{
+  "name": "English Reader — 外刊读物",
+  "short_name": "English Reader",
+  "description": "Free English foreign publication reader. Read curated articles from BBC, NPR, The Guardian, Aeon, MIT Tech Review and more for English learning.",
+  "start_url": "/english-reader/",
+  "scope": "/english-reader/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#1a73e8",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "news", "books"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Search",
+      "short_name": "Search",
+      "description": "Search articles",
+      "url": "/english-reader/#/search",
+      "icons": []
+    }
+  ]
+}
