@@ -1,0 +1,72 @@
+name: Daily Article Crawl & Deploy
+
+on:
+  schedule:
+    # Runs at 06:00 UTC daily (14:00 Beijing time)
+    - cron: '0 6 * * *'
+  workflow_dispatch:       # Manual trigger from GitHub UI
+  push:
+    branches: [main]
+    paths:
+      - 'crawler/**'
+      - 'public/**'
+      - '.github/workflows/daily-crawl.yml'
+
+permissions:
+  contents: write           # For git-auto-commit
+  pages: write              # For GitHub Pages deploy
+  id-token: write           # For GitHub Pages deploy
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run crawler
+        run: node crawler/index.js
+
+      - name: Commit and push data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '📰 Daily article update'
+          commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+          file_pattern: 'public/data/*.json'
+          skip_fetch: true
+          skip_dirty_check: false
+
+  # Deploy to GitHub Pages
+  deploy:
+    needs: crawl
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
