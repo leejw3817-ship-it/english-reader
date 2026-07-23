@@ -247,7 +247,7 @@
       : '';
 
     return `
-      <div class="article-card" data-id="${escapeAttr(article.id)}" onclick="window.location.hash='article/${escapeAttr(article.id)}'">
+      <div class="article-card" data-id="${escapeAttr(article.id)}" onclick="window.location.hash='/article/${escapeAttr(article.id)}'">
         ${isRead ? '<span class="card-read-badge" title="Read">✓</span>' : ''}
         <div class="card-source">
           <span class="card-source-dot" style="background:${escapeAttr(color)}"></span>
