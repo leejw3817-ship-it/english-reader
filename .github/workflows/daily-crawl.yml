@@ -1,0 +1,47 @@
+name: 每日文章自动爬取
+
+on:
+  schedule:
+    # 北京时间每天 8:00 和 20:00 (UTC 0:00 和 12:00)
+    - cron: '0 0,12 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'crawler/**'
+      - '.github/workflows/**'
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 安装Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 爬取最新文章
+        run: node crawler/index.js
+
+      - name: 提交数据更新
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '📰 每日文章更新'
+          commit_author: 'English Reader Bot <bot@english-reader.dev>'
+          file_pattern: 'data/*.json docs/data/*.json'
+          skip_fetch: true
+          skip_dirty_check: false
