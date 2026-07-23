@@ -118,7 +118,7 @@
   function showSearch(query) {
     hideAllViews();
     $('#viewHome').classList.remove('hidden');
-    $('#activeFilterLabel').textContent = query ? `Search: "${query}"` : 'All categories';
+    $('#activeFilterLabel').textContent = query ? `搜索："${query}"` : '全部分类';
 
     if (!query) {
       return showHome();
@@ -150,9 +150,9 @@
     if (!article) {
       $('#articleDetail').innerHTML = `
         <div class="empty-state">
-          <h3>Article not found</h3>
-          <p>The article may have been removed or the link is incorrect.</p>
-          <a href="#/" style="display:inline-block;margin-top:16px;color:var(--color-primary)">← Back to home</a>
+          <h3>文章未找到</h3>
+          <p>该文章可能已被移除或链接有误。</p>
+          <a href="#/" style="display:inline-block;margin-top:16px;color:var(--color-primary)">← 返回首页</a>
         </div>`;
       return;
     }
@@ -179,7 +179,7 @@
     updateFilterPills(name);
 
     $('#heroSearchInput').value = '';
-    $('#activeFilterLabel').textContent = `Category: ${name}`;
+    $('#activeFilterLabel').textContent = `分类：${name}`;
   }
 
   // ==================== View Helpers ====================
@@ -260,9 +260,9 @@
           <span class="card-tag ${escapeAttr(article.difficulty || 'intermediate')}">${capitalize(article.difficulty || 'intermediate')}</span>
           <span>${dateStr}</span>
           <span class="card-dot">·</span>
-          <span>${readTime} min read</span>
+          <span>${readTime} 分钟</span>
           <span class="card-dot">·</span>
-          <span>${wordCount} words</span>
+          <span>${wordCount} 词</span>
         </div>
       </div>
     `;
@@ -285,8 +285,8 @@
 
     grid.innerHTML = `
       <div class="search-results-header" style="grid-column:1/-1">
-        <h2>Results for "${escapeHtml(query)}"</h2>
-        <p class="sr-count">${results.length} article${results.length !== 1 ? 's' : ''} found</p>
+        <h2>搜索 "${escapeHtml(query)}" 的结果</h2>
+        <p class="sr-count">找到 ${results.length} 篇文章</p>
       </div>
       <div class="search-results-list" style="grid-column:1/-1">
         ${results.map((r) => {
@@ -331,17 +331,17 @@
       <div class="ad-meta">
         <span>${dateStr}</span>
         <span class="ad-meta-dot">·</span>
-        <span>${readTime} min read</span>
+        <span>${readTime} 分钟</span>
         <span class="ad-meta-dot">·</span>
-        <span>${wordCount} words</span>
-        ${article.author ? `<span class="ad-meta-dot">·</span><span>By ${escapeHtml(article.author)}</span>` : ''}
+        <span>${wordCount} 词</span>
+        ${article.author ? `<span class="ad-meta-dot">·</span><span>作者：${escapeHtml(article.author)}</span>` : ''}
       </div>
       <div class="ad-content" style="font-size:${STATE.fontSize}px">
         ${sanitizeContent(content)}
       </div>
       <a class="ad-original" href="${escapeAttr(article.url)}" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-        Read original on ${escapeHtml(article.source)}
+        在 ${escapeHtml(article.source)} 阅读原文
       </a>
     `;
   }
@@ -353,9 +353,9 @@
       $('#lastUpdated').textContent = timeAgo(STATE.meta.lastUpdated);
     }
     if (query) {
-      $('#activeFilterLabel').textContent = `Search: "${query}"`;
+      $('#activeFilterLabel').textContent = `搜索："${query}"`;
     } else if (STATE.currentCategory === 'All') {
-      $('#activeFilterLabel').textContent = 'All categories';
+      $('#activeFilterLabel').textContent = '全部分类';
     }
   }
 
@@ -532,7 +532,7 @@
       ${meaning.partOfSpeech ? `<div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:4px">${escapeHtml(meaning.partOfSpeech)}</div>` : ''}
       ${definition ? `<div class="vt-def">${escapeHtml(definition.definition)}</div>` : ''}
       ${definition?.example ? `<div class="vt-example">"${escapeHtml(definition.example)}"</div>` : ''}
-      ${def.audio ? `<div class="vt-audio" onclick="new Audio('${escapeAttr(def.audio)}').play()">🔊 Listen</div>` : ''}
+      ${def.audio ? `<div class="vt-audio" onclick="new Audio('${escapeAttr(def.audio)}').play()">🔊 播放发音</div>` : ''}
     `;
 
     // Position tooltip near the clicked word
@@ -560,7 +560,7 @@
 
   // ==================== Content Sanitizer ====================
   function sanitizeContent(html) {
-    if (!html) return '<p>No content available. Click "Read original" to view the full article.</p>';
+    if (!html) return '<p>暂无内容，请点击"阅读原文"查看完整文章。</p>';
     // Basic sanitization: strip scripts, event handlers, iframes
     let clean = html
       .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -572,7 +572,7 @@
           .replace(/\s(on\w+)=/gi, ' data-removed=$1=')
           .replace(/<img/i, '<img loading="lazy"');
       });
-    return clean || '<p>No content available.</p>';
+    return clean || '<p>暂无内容。</p>';
   }
 
   // ==================== Utility Functions ====================
@@ -589,22 +589,24 @@
   }
 
   function timeAgo(dateStr) {
-    if (!dateStr) return 'unknown';
+    if (!dateStr) return '未知';
     const now = Date.now();
     const then = new Date(dateStr).getTime();
-    if (isNaN(then)) return 'unknown';
+    if (isNaN(then)) return '未知';
     const diff = Math.floor((now - then) / 1000);
 
-    if (diff < 60) return 'just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
-    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    if (diff < 60) return '刚刚';
+    if (diff < 3600) return `${Math.floor(diff / 60)} 分钟前`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} 小时前`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)} 天前`;
+    return new Date(dateStr).toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
   }
 
   function capitalize(str) {
+    // 中文化难度标签
+    const map = { beginner: '入门', intermediate: '中级', advanced: '高级' };
     if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return map[str.toLowerCase()] || str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   function getSourceColor(source) {

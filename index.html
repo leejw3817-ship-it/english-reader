@@ -39,17 +39,17 @@
           <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
         </svg>
         <input type="text" class="header-search-input" id="headerSearchInput"
-               placeholder="Search articles…" autocomplete="off">
+               placeholder="搜索文章…" autocomplete="off">
         <button class="search-clear hidden" id="searchClear" aria-label="Clear search">&times;</button>
       </div>
 
       <nav class="nav-links">
-        <a href="#/" class="nav-link active" data-route="/">Home</a>
-        <a href="#/category/Technology" class="nav-link" data-cat="Technology">Tech</a>
-        <a href="#/category/Science" class="nav-link" data-cat="Science">Science</a>
-        <a href="#/category/World" class="nav-link" data-cat="World">World</a>
-        <a href="#/category/Business" class="nav-link" data-cat="Business">Business</a>
-        <a href="#/category/Culture" class="nav-link" data-cat="Culture">Culture</a>
+        <a href="#/" class="nav-link active" data-route="/">首页</a>
+        <a href="#/category/Technology" class="nav-link" data-cat="Technology">科技</a>
+        <a href="#/category/Science" class="nav-link" data-cat="Science">科学</a>
+        <a href="#/category/World" class="nav-link" data-cat="World">世界</a>
+        <a href="#/category/Business" class="nav-link" data-cat="Business">商业</a>
+        <a href="#/category/Culture" class="nav-link" data-cat="Culture">文化</a>
       </nav>
     </div>
   </header>
@@ -67,40 +67,40 @@
           </svg>
         </div>
         <h1 class="hero-title">English Reader</h1>
-        <p class="hero-subtitle">Read the world. Learn English.</p>
+        <p class="hero-subtitle">读世界，学英语</p>
 
         <div class="hero-search">
           <svg class="search-icon-lg" viewBox="0 0 24 24" width="22" height="22" fill="#9aa0a6">
             <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
           </svg>
           <input type="text" class="hero-search-input" id="heroSearchInput"
-                 placeholder="Search for articles…" autocomplete="off" autofocus>
+                 placeholder="搜索感兴趣的文章…" autocomplete="off" autofocus>
           <kbd class="search-kbd" id="searchKbd">Ctrl+K</kbd>
         </div>
       </div>
 
       <!-- Category Filter Pills -->
       <div class="filter-bar">
-        <button class="filter-pill active" data-category="All">All</button>
-        <button class="filter-pill" data-category="Technology">Technology</button>
-        <button class="filter-pill" data-category="Science">Science</button>
-        <button class="filter-pill" data-category="World">World</button>
-        <button class="filter-pill" data-category="Business">Business</button>
-        <button class="filter-pill" data-category="Culture">Culture</button>
-        <button class="filter-pill" data-category="General">General</button>
+        <button class="filter-pill active" data-category="All">全部</button>
+        <button class="filter-pill" data-category="Technology">科技</button>
+        <button class="filter-pill" data-category="Science">科学</button>
+        <button class="filter-pill" data-category="World">世界</button>
+        <button class="filter-pill" data-category="Business">商业</button>
+        <button class="filter-pill" data-category="Culture">文化</button>
+        <button class="filter-pill" data-category="General">综合</button>
       </div>
 
       <!-- Article Stats -->
       <div class="stats-bar">
         <span class="stat-item">
-          <span class="stat-value" id="articleCount">0</span> articles
+          <span class="stat-value" id="articleCount">0</span> 篇文章
         </span>
         <span class="stat-divider">·</span>
         <span class="stat-item">
-          Updated <span class="stat-value" id="lastUpdated">--</span>
+          更新于 <span class="stat-value" id="lastUpdated">--</span>
         </span>
         <span class="stat-divider">·</span>
-        <span class="stat-item" id="activeFilterLabel">All categories</span>
+        <span class="stat-item" id="activeFilterLabel">全部分类</span>
       </div>
 
       <!-- Article Grid -->
@@ -113,13 +113,13 @@
         <svg viewBox="0 0 24 24" width="48" height="48" fill="#dadce0">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
         </svg>
-        <h3>No articles found</h3>
-        <p>Try a different search term or category filter.</p>
+        <h3>未找到文章</h3>
+        <p>请尝试其他搜索词或分类筛选。</p>
       </div>
 
       <!-- Load More -->
       <div class="load-more hidden" id="loadMore">
-        <button class="btn-load-more" id="btnLoadMore">Load more articles</button>
+        <button class="btn-load-more" id="btnLoadMore">加载更多文章</button>
       </div>
     </section>
 
@@ -130,8 +130,8 @@
           <svg viewBox="0 0 24 24" width="20" height="20" fill="#5f6368">
             <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
           </svg>
-          Back
-        </button>
+          返回
+</button>
 
         <article class="article-detail" id="articleDetail">
           <!-- Filled by JS -->
@@ -157,11 +157,11 @@
   <!-- ===== Footer ===== -->
   <footer class="footer">
     <div class="footer-inner">
-      <span>English Reader — 外刊读物</span>
+      <span>外刊读物 — 免费英语学习平台</span>
       <span class="footer-divider">·</span>
-      <span>Open source on <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></span>
+      <span><a href="https://github.com" target="_blank" rel="noopener">GitHub</a> 开源</span>
       <span class="footer-divider">·</span>
-      <span>Articles from public RSS feeds for educational purposes</span>
+      <span>文章内容来自公共 RSS 源，仅供学习使用</span>
     </div>
   </footer>
 
